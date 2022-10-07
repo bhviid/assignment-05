@@ -203,6 +203,33 @@ public class ProgramTests
         _program.Items[0].SellIn.Should().Be(SellInBefore);
         _program.Items[0].Quality.Should().Be(QualityBefore);
     }
+    [Fact]
+    public void UpdateQuality_conjured_item_within_sellin(){
+       
+        // Arrange
+        _program.Items.Add(new Item{Name = "Conjured Mana Cake", SellIn = 5, Quality = 20});    
+
+        // Act
+        _program.UpdateQuality();
+
+        //Assert
+        _program.Items[0].SellIn.Should().Be(4);
+        _program.Items[0].Quality.Should().Be(18);
+    }
+
+    [Fact]
+    public void UpdateQuality_conjured_item_past_sellin_date(){
+       
+        // Arrange
+        _program.Items.Add(new Item{Name = "Conjured Mana Cake", SellIn = 0, Quality = 20});    
+
+        // Act
+        _program.UpdateQuality();
+
+        //Assert
+        _program.Items[0].SellIn.Should().Be(-1);
+        _program.Items[0].Quality.Should().Be(16);
+    }
 
     [Fact]
     public void Main_something()
@@ -214,5 +241,25 @@ public class ProgramTests
 
         // Assert
 
+    }
+
+    // Gotta pump the numbers yo
+    [Theory]
+    [InlineData("+5 Dexterity Vest",10, 20)]
+    [InlineData("Sulfuras, Hand of Ragnaros", 0, 80)]
+    [InlineData("Backstage passes to a TAFKAL80ETC concert",15, 20)]
+    [InlineData("Aged Brie", 2, 0)]
+    [InlineData( "Conjured Mana Cake", 3, 6)]
+    public void InitItems_contains(string itemName, int itemSellIn,int itemQuality)
+    {
+        // Arrange
+
+        // Act
+        var res = Program.InitItems();
+
+        // Assert
+        Assert.Contains(res, i => i.Name == itemName 
+                                && i.SellIn == itemSellIn 
+                                && i.Quality == itemQuality);
     }
 }
