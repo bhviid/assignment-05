@@ -20,10 +20,10 @@ public class ProgramTests
     }
 
     [Fact]
-    public void UpdateQuality_generic_item()
+    public void UpdateQuality_standarditem()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20});    
+        _program.Items.Add(new StandardItem{Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20});    
 
         // Act
         _program.UpdateQuality();
@@ -34,10 +34,10 @@ public class ProgramTests
     }
 
     [Fact]
-    public void UpdateQuality_generic_item_sellin_has_been_passed()
+    public void UpdateQuality_standarditem_sellin_has_been_passed()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "+5 Dexterity Vest", SellIn = 0, Quality = 20});    
+        _program.Items.Add(new StandardItem{Name = "+5 Dexterity Vest", SellIn = 0, Quality = 20});    
 
         // Act
         _program.UpdateQuality();
@@ -48,10 +48,10 @@ public class ProgramTests
     }
 
     [Fact]
-    public void UpdateQuality_generic_item_quality_never_negative()
+    public void UpdateQuality_standarditem_quality_never_negative()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "+5 Dexterity Vest", SellIn = 2, Quality = 5});    
+        _program.Items.Add(new StandardItem{Name = "+5 Dexterity Vest", SellIn = 2, Quality = 5});    
 
         // Act
         for (int i = 0; i < 5; i++)
@@ -68,7 +68,7 @@ public class ProgramTests
     public void UpdateQuality_generic_item_past_sellin_date()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "+5 Dexterity Vest", SellIn = -1, Quality = 20});    
+        _program.Items.Add(new StandardItem{Name = "+5 Dexterity Vest", SellIn = -1, Quality = 20});    
 
         // Act
         _program.UpdateQuality();
@@ -82,7 +82,7 @@ public class ProgramTests
     public void UpdateQuality_ETC_item_more_than_10()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "Backstage passes to a TAFKAL80ETC concert",
+        _program.Items.Add(new BackstageItem{Name = "Backstage passes to a TAFKAL80ETC concert",
                                     SellIn = 15,
                                     Quality = 20});    
 
@@ -98,7 +98,7 @@ public class ProgramTests
     public void UpdateQuality_ETC_item_less_than_11()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "Backstage passes to a TAFKAL80ETC concert",
+        _program.Items.Add(new BackstageItem{Name = "Backstage passes to a TAFKAL80ETC concert",
                                     SellIn = 9,
                                     Quality = 20});    
 
@@ -114,7 +114,7 @@ public class ProgramTests
     public void UpdateQuality_ETC_item_less_than_6()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "Backstage passes to a TAFKAL80ETC concert",
+        _program.Items.Add(new BackstageItem{Name = "Backstage passes to a TAFKAL80ETC concert",
                                     SellIn = 5,
                                     Quality = 20});    
 
@@ -130,7 +130,7 @@ public class ProgramTests
     public void UpdateQuality_ETC_item_worthless()
     {
         // Arrange
-        _program.Items.Add(new Item{Name = "Backstage passes to a TAFKAL80ETC concert",
+        _program.Items.Add(new BackstageItem{Name = "Backstage passes to a TAFKAL80ETC concert",
                                     SellIn = 0,
                                     Quality = 20});    
 
@@ -146,7 +146,7 @@ public class ProgramTests
     public void UpdateQuality_brie_item()
     {
         // Arrange
-        _program.Items.Add(new Item { Name = "Aged Brie", SellIn = 2, Quality = 0 });    
+        _program.Items.Add(new BrieItem { Name = "Aged Brie", SellIn = 2, Quality = 0 });    
 
         // Act
         _program.UpdateQuality();
@@ -160,7 +160,7 @@ public class ProgramTests
     public void UpdateQuality_brie_item_past_sellin_date()
     {
         // Arrange
-        _program.Items.Add(new Item { Name = "Aged Brie", SellIn = -2, Quality = 4 });    
+        _program.Items.Add(new BrieItem { Name = "Aged Brie", SellIn = -2, Quality = 4 });    
 
         // Act
         _program.UpdateQuality();
@@ -174,7 +174,7 @@ public class ProgramTests
     public void UpdateQuality_brie_item_quality_never_surpass_50()
     {
         // Arrange
-        _program.Items.Add(new Item { Name = "Aged Brie", SellIn = -2, Quality = 49 });    
+        _program.Items.Add(new BrieItem { Name = "Aged Brie", SellIn = -2, Quality = 49 });    
 
         // Act
         _program.UpdateQuality();
@@ -191,7 +191,7 @@ public class ProgramTests
         var SellInBefore = 10;
         var QualityBefore = 80;
         _program.Items.Add(
-            new Item{   Name = "Sulfuras, Hand of Ragnaros", 
+            new LegendaryItem{   Name = "Sulfuras, Hand of Ragnaros", 
                         SellIn = SellInBefore, 
                         Quality = QualityBefore }
             );    
@@ -207,7 +207,7 @@ public class ProgramTests
     public void UpdateQuality_conjured_item_within_sellin(){
        
         // Arrange
-        _program.Items.Add(new Item{Name = "Conjured Mana Cake", SellIn = 5, Quality = 20});    
+        _program.Items.Add(new ConjuredItem{Name = "Conjured Mana Cake", SellIn = 5, Quality = 20});    
 
         // Act
         _program.UpdateQuality();
@@ -221,7 +221,7 @@ public class ProgramTests
     public void UpdateQuality_conjured_item_past_sellin_date(){
        
         // Arrange
-        _program.Items.Add(new Item{Name = "Conjured Mana Cake", SellIn = 0, Quality = 20});    
+        _program.Items.Add(new ConjuredItem{Name = "Conjured Mana Cake", SellIn = 0, Quality = 20});    
 
         // Act
         _program.UpdateQuality();
@@ -229,18 +229,6 @@ public class ProgramTests
         //Assert
         _program.Items[0].SellIn.Should().Be(-1);
         _program.Items[0].Quality.Should().Be(16);
-    }
-
-    [Fact]
-    public void Main_something()
-    {
-        // Arrange
-
-        // Act
-        //Program.Main(new string[]{});
-
-        // Assert
-
     }
 
     // Gotta pump the numbers yo
